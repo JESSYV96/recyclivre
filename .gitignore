@@ -8,6 +8,15 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+.vscode/*
 
 # macOS
 .DS_Store
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# dotenv environment variables file
+.env
