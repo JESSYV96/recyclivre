@@ -5,21 +5,17 @@ const AddressBox = ({navigation}) => {
     return (
         <View style={styles.inputContainer}>
             <Pressable
-                onPress={() => navigation.navigate('SearchAddressScreen')}
+                onPress={() => navigation.navigate('SearchAddress')}
                 style={styles.searchInput}>
                 <Text style={styles.buttonText}>Entrer une adresse</Text>
             </Pressable>
         </View>
-
     )
 }
 
 export default AddressBox
 
 const styles = StyleSheet.create({
-    inputContainer: {
-       
-    },
     searchInput: {
         marginTop: 52,
         marginHorizontal: 10,
