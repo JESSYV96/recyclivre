@@ -1,12 +1,12 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 
-const Itinerary = ({address, duration, distance, goToDestination}) => {
+const Itinerary = ({endAddress, duration, distance, goToDestination}) => {
     return (
         <View style={styles.container}>
             <View style={styles.itineraryInfo}>
                 <Text>Votre boîte à lire la plus proche : </Text>
-                <Text style={{ textAlign: 'center' }}>{address}</Text>
+                <Text style={{ textAlign: 'center' }}>{endAddress}</Text>
                 <Text>{duration} ({distance})</Text>
             </View>
             <View style={styles.itineraryButtons}>

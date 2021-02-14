@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import ButtonFindBox from '../components/ButtonFindBox';
+import { GOOGLE_KEY_API } from '../env';
 
 const SearchAddressScreen = () => {
     const [placeId, setPlaceId] = useState(null);
@@ -33,14 +34,17 @@ const SearchAddressScreen = () => {
                     setPlaceId(data.place_id)
                 }}
                 query={{
-                    key: 'AIzaSyAfmOrInytBXJlDZ0_u1kqOFFxyo4Fzhb8',
+                    key: GOOGLE_KEY_API,
                     language: 'fr',
                 }}
                 currentLocation={true}
                 currentLocationLabel='Position actuelle'
             />
             <View style={styles.buttonContainer}>
-              <ButtonFindBox navigation={navigation} placeId={placeId} origin={null} />
+                <ButtonFindBox
+                    navigation={navigation}
+                    placeId={placeId} 
+                    origin={null} />
             </View>
         </View>
     )

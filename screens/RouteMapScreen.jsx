@@ -5,20 +5,22 @@ import MapViewDirections from 'react-native-maps-directions';
 import { useRoute } from '@react-navigation/native';
 import Itinerary from '../components/Itinerary';
 import { createOpenLink } from 'react-native-open-maps';
+import { GOOGLE_KEY_API } from '../env';
 
-const yosemite = { latitude: 37.865101, longitude: -119.538330 };
 const destination = { latitude: 49.019495, longitude: 2.1537956 };
 
 const RouteMapScreen = () => {
     const route = useRoute()
-    const [address, setAddress] = useState('')
+    const [startAddress, setStartAddress] = useState('')
+    const [addressEnd, setAddressEnd] = useState('')
     const [distance, setDistance] = useState('')
     const [duration, setDuration] = useState('')
     
     const origin = route.params.origin
     const placeId = route.params.placeId
-    const openYosemite = createOpenLink({
-        end: address,
+    const openAppGoogleMaps = createOpenLink({
+        start: startAddress !== "" ? startAddress : null,
+        end: addressEnd,
         provider:'google',
         navigate_mode: 'preview'
     });
@@ -29,23 +31,25 @@ const RouteMapScreen = () => {
      */
     useEffect(() => {
         if (origin !== undefined) {
-            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude}, ${origin.longitude}&destination=${destination.latitude}, ${destination.longitude}&key=AIzaSyAfmOrInytBXJlDZ0_u1kqOFFxyo4Fzhb8&language=fr`)
+            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude}, ${origin.longitude}&destination=${destination.latitude}, ${destination.longitude}&key=${GOOGLE_KEY_API}&language=fr`)
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (data) {
-                    setAddress(data.routes[0].legs[0].end_address)
+                    setStartAddress(data.routes[0].legs[0].start_address)
+                    setAddressEnd(data.routes[0].legs[0].end_address)
                     setDistance(data.routes[0].legs[0].distance.text)
                     setDuration(data.routes[0].legs[0].duration.text)
                 });
         }
         if (placeId !== undefined) {
-            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=place_id:${placeId}}&destination=${destination.latitude}, ${destination.longitude}&key=AIzaSyAfmOrInytBXJlDZ0_u1kqOFFxyo4Fzhb8&language=fr`)
+            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=place_id:${placeId}&destination=${destination.latitude}, ${destination.longitude}&key=${GOOGLE_KEY_API}&language=fr`)
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (data) {
-                    setAddress(data.routes[0].legs[0].end_address)
+                    setStartAddress(data.routes[0].legs[0].start_address)
+                    setAddressEnd(data.routes[0].legs[0].end_address)
                     setDistance(data.routes[0].legs[0].distance.text)
                     setDuration(data.routes[0].legs[0].duration.text)
                 });
@@ -65,8 +69,8 @@ const RouteMapScreen = () => {
                 scrollEnabled={false}
                 style={styles.map}
                 initialRegion={{
-                    latitude: origin.latitude,
-                    longitude: origin.longitude,
+                    latitude:  48.856614,
+                    longitude: 2.3522219,
                     latitudeDelta: 0.900,
                     longitudeDelta: 0.900,
                 }}>
@@ -80,14 +84,14 @@ const RouteMapScreen = () => {
                     destination={destination}
                     strokeWidth={3}
                     strokeColor="orange"
-                    apikey='AIzaSyAfmOrInytBXJlDZ0_u1kqOFFxyo4Fzhb8'
+                    apikey={GOOGLE_KEY_API}
                     language='fr'
                 />
             </MapView>
             <View style={styles.itineraryContainer}>
                 <Itinerary
-                    goToDestination={openYosemite}
-                    address={address}
+                    goToDestination={openAppGoogleMaps}
+                    endAddress={addressEnd}
                     distance={distance}
                     duration={duration} />
             </View>
