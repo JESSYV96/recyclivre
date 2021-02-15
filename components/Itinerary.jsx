@@ -6,7 +6,7 @@ const Itinerary = ({endAddress, duration, distance, goToDestination}) => {
         <View style={styles.container}>
             <View style={styles.itineraryInfo}>
                 <Text>Votre boîte à lire la plus proche : </Text>
-                <Text style={{ textAlign: 'center' }}>{endAddress}</Text>
+                <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>{endAddress}</Text>
                 <Text>{duration} ({distance})</Text>
             </View>
             <View style={styles.itineraryButtons}>

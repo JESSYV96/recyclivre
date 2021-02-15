@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import {
     StyleSheet,
-    Button,
     View,
     Platform,
-    FlatList,
-    TextInput,
-    TouchableWithoutFeedback
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import ButtonFindBox from '../components/ButtonFindBox';
 import { GOOGLE_KEY_API } from '../env';
 

@@ -43,7 +43,6 @@ const HomeScreen = () => {
                 {boxToRead.map(box => (
                     <Marker
                         title={box.Adresse}
-                        description={box.Remarque}
                         key={`${box.Adresse}-${box.Code_Postal}`}
                         coordinate={{
                             latitude: parseFloat(box.Coord_GPS.split(',')[0]),
