@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, View } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
-import boxToRead from '../data/boiteALire.json'
 import AddressBox from '../components/AddressBox'
 import ButtonFindBox from '../components/ButtonFindBox';
 import { getUserLocation } from '../store/user/user.actions';
+import { getAllBoxes } from '../store/box/box.actions';
 
 const HomeScreen = () => {
     const navigation = useNavigation();
@@ -24,10 +24,12 @@ const HomeScreen = () => {
             let location = await Location.getCurrentPositionAsync({});
             dispatch(getUserLocation(location))
         })();
+        dispatch(getAllBoxes())
     }, [])
 
     const { loading: loadingGeoLocation, geoLocation } = useSelector(state => state.user)
-
+    const { listBox } = useSelector(state => state.box)
+    
     return (
         <View style={styles.container}>
             <MapView
@@ -40,27 +42,28 @@ const HomeScreen = () => {
                     latitudeDelta: 0.900,
                     longitudeDelta: 0.900,
                 }}>
-                {boxToRead.map(box => (
+                {listBox.map(box => (
                     <Marker
-                        title={box.Adresse}
-                        key={`${box.Adresse}-${box.Code_Postal}`}
+                        title={box.address}
+                        description={box.comment}
+                        key={box.id}
                         coordinate={{
-                            latitude: parseFloat(box.Coord_GPS.split(',')[0]),
-                            longitude: parseFloat(box.Coord_GPS.split(',')[1])
+                            latitude: parseFloat(box.coords.latitude),
+                            longitude: parseFloat(box.coords.longitude)
                         }} />
                 ))}
             </MapView>
             <AddressBox navigation={navigation} />
             <View style={styles.bottom}>
                 {!loadingGeoLocation && geoLocation && (
-                <ButtonFindBox
-                    location={{
-                        latitude: geoLocation.latitude,
-                        longitude: geoLocation.longitude
-                    }}
-                    navigation={navigation}
-                />
-            )}  
+                    <ButtonFindBox
+                        location={{
+                            latitude: geoLocation.latitude,
+                            longitude: geoLocation.longitude
+                        }}
+                        navigation={navigation}
+                    />
+                )}
             </View>
         </View>
     )

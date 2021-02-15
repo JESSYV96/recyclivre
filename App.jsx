@@ -7,20 +7,22 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
 import SearchAddressScreen from './screens/SearchAddressScreen';
 import RouteMapScreen from './screens/RouteMapScreen';
+
 import userReducer from './store/user/user.reducer';
 import itineraryReducer from './store/itinerary/itinerary.reducer'
+import boxReducer from './store/box/box.reducer';
 
 const Stack = createStackNavigator();
 
 const mainReducer = combineReducers({
   user: userReducer,
-  itinerary: itineraryReducer
+  itinerary: itineraryReducer,
+  box: boxReducer
 })
 
 const store = createStore(
   mainReducer,
   applyMiddleware(thunk),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
 export default function App() {

@@ -44,7 +44,6 @@ const SearchAddressScreen = () => {
                         }} />
                 </View>
             )}
-
         </View>
     )
 }

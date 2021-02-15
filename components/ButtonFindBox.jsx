@@ -10,8 +10,7 @@ const ButtonFindBox = ({ navigation, location }) => {
     const goToMapRoutesBox = () => {
         if (location) {
             navigation.navigate('RouteMap', { location });
-        }
-       
+        } 
     }
 
     return (

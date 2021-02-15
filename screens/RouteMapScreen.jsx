@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -9,8 +9,7 @@ import { createOpenLink } from 'react-native-open-maps';
 import { GOOGLE_KEY_API } from '../env';
 
 import { getItineraryInfo } from '../store/itinerary/itinerary.actions';
-
-import boxToRead from '../data/boiteALire.json'
+import { getShorterDistance } from '../store/box/box.actions';
 
 const destination = { latitude: 49.019495, longitude: 2.1537956 };
 
@@ -18,27 +17,33 @@ const RouteMapScreen = () => {
     const route = useRoute()
     const dispatch = useDispatch();
 
-    const location = route.params.location
+    const location = route.params.location;
+
+    const { listBox, shorterDestination, loading: loadingShorterDestination } = useSelector(state => state.box)
 
     /**  
      * Get intenary from origin to destination, make sure to respect the format
      * https://developers.google.com/maps/documentation/directions/overview
      */
     useEffect(() => {
-        fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${location.latitude}, ${location.longitude}&destination=${destination.latitude}, ${destination.longitude}&key=${GOOGLE_KEY_API}&language=fr`)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            dispatch(getItineraryInfo(
-                data.routes[0].legs[0].start_address,
-                data.routes[0].legs[0].start_location,
-                data.routes[0].legs[0].end_address,
-                data.routes[0].legs[0].end_location,
-                data.routes[0].legs[0].duration.text,
-                data.routes[0].legs[0].distance.text
-            ))
-        });
+        dispatch(getShorterDistance(location.latitude, location.longitude, listBox))
+        if (shorterDestination) {
+            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${location.latitude}, ${location.longitude}&destination=${shorterDestination.coords.latitude}, ${shorterDestination.coords.longitude}&key=${GOOGLE_KEY_API}&language=fr`)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    dispatch(getItineraryInfo(
+                        data.routes[0].legs[0].start_address,
+                        data.routes[0].legs[0].start_location,
+                        data.routes[0].legs[0].end_address,
+                        data.routes[0].legs[0].end_location,
+                        data.routes[0].legs[0].duration.text,
+                        data.routes[0].legs[0].distance.text
+                    ))
+                });
+        }
+
     }, [])
 
     const { loading: loadingLocation, itineraryInfo } = useSelector(state => state.itinerary)
@@ -61,10 +66,6 @@ const RouteMapScreen = () => {
             <MapView
                 provider={PROVIDER_GOOGLE}
                 showsUserLocation={true}
-                zoomEnabled={false}
-                zoomTapEnabled={false}
-                rotateEnabled={false}
-                scrollEnabled={false}
                 style={styles.map}
                 initialRegion={{
                     latitude: 48.856614,
@@ -79,15 +80,18 @@ const RouteMapScreen = () => {
                             longitude: startLocation.lng
                         }} />
                 )}
-                <Marker
+                {!loadingShorterDestination && (
+                   <Marker
                     coordinate={{
-                        latitude: destination.latitude,
-                        longitude: destination.longitude
-                    }} />
-                {!loadingLocation && startLocation && (
+                        latitude: shorterDestination.coords.latitude,
+                        longitude: shorterDestination.coords.longitude
+                    }} /> 
+                )}
+                
+                {!loadingLocation && !loadingShorterDestination && (
                     <MapViewDirections
                         origin={{ latitude: startLocation.lat, longitude: startLocation.lng }}
-                        destination={destination}
+                        destination={shorterDestination.coords}
                         strokeWidth={4}
                         strokeColor="orange"
                         apikey={GOOGLE_KEY_API}
