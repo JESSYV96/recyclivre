@@ -54,8 +54,7 @@ const HomeScreen = () => {
             <View style={styles.bottom}>
                 {!loadingGeoLocation && geoLocation && (
                 <ButtonFindBox
-                    placeId={null}
-                    origin={{
+                    location={{
                         latitude: geoLocation.latitude,
                         longitude: geoLocation.longitude
                     }}

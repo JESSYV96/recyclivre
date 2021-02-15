@@ -11,7 +11,7 @@ import ButtonFindBox from '../components/ButtonFindBox';
 import { GOOGLE_KEY_API } from '../env';
 
 const SearchAddressScreen = () => {
-    const [placeId, setPlaceId] = useState(null);
+    const [location, setSetLocation] = useState(null);
     const navigation = useNavigation();
 
     return (
@@ -24,21 +24,27 @@ const SearchAddressScreen = () => {
                 color="black" />
             <GooglePlacesAutocomplete
                 placeholder='Entrer une adresse'
+                fetchDetails={true}
                 minLength={3}
-                onPress={(data, details = null) => {
-                    setPlaceId(data.place_id)
+                onPress={(_, details = null) => {
+                    setSetLocation(details.geometry.location)
                 }}
                 query={{
                     key: GOOGLE_KEY_API,
                     language: 'fr',
                 }}
             />
-            <View style={styles.buttonContainer}>
-                <ButtonFindBox
-                    navigation={navigation}
-                    placeId={placeId} 
-                    origin={null} />
-            </View>
+            {location && (
+                <View style={styles.buttonContainer}>
+                    <ButtonFindBox
+                        navigation={navigation}
+                        location={{
+                            latitude: location.lat,
+                            longitude: location.lng
+                        }} />
+                </View>
+            )}
+
         </View>
     )
 }

@@ -18,51 +18,29 @@ const RouteMapScreen = () => {
     const route = useRoute()
     const dispatch = useDispatch();
 
-    const origin = route.params.origin
-    const placeId = route.params.placeId
-
-    // const googleDirectionRequest = (startLocation, endLocation) => {
-
-    // }
+    const location = route.params.location
 
     /**  
      * Get intenary from origin to destination, make sure to respect the format
      * https://developers.google.com/maps/documentation/directions/overview
      */
     useEffect(() => {
-        if (origin !== undefined) {
-            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude}, ${origin.longitude}&destination=${destination.latitude}, ${destination.longitude}&key=${GOOGLE_KEY_API}&language=fr`)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    dispatch(getItineraryInfo(
-                        data.routes[0].legs[0].start_address,
-                        data.routes[0].legs[0].start_location,
-                        data.routes[0].legs[0].end_address,
-                        data.routes[0].legs[0].end_location,
-                        data.routes[0].legs[0].duration.text,
-                        data.routes[0].legs[0].distance.text
-                    ))
-                });
-        }
-        if (placeId !== undefined) {
-            fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=place_id:${placeId}&destination=${destination.latitude}, ${destination.longitude}&key=${GOOGLE_KEY_API}&language=fr`)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    dispatch(getItineraryInfo(
-                        data.routes[0].legs[0].start_address,
-                        data.routes[0].legs[0].start_location,
-                        data.routes[0].legs[0].end_address,
-                        data.routes[0].legs[0].end_location,
-                        data.routes[0].legs[0].duration.text,
-                        data.routes[0].legs[0].distance.text
-                    ))
-                });
-        }
+        fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${location.latitude}, ${location.longitude}&destination=${destination.latitude}, ${destination.longitude}&key=${GOOGLE_KEY_API}&language=fr`)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            dispatch(getItineraryInfo(
+                data.routes[0].legs[0].start_address,
+                data.routes[0].legs[0].start_location,
+                data.routes[0].legs[0].end_address,
+                data.routes[0].legs[0].end_location,
+                data.routes[0].legs[0].duration.text,
+                data.routes[0].legs[0].distance.text
+            ))
+        });
     }, [])
+
     const { loading: loadingLocation, itineraryInfo } = useSelector(state => state.itinerary)
     const {
         startAddress,
@@ -72,7 +50,7 @@ const RouteMapScreen = () => {
         duration } = itineraryInfo
 
     const openAppGoogleMaps = createOpenLink({
-        start: startAddress !== "" ? startAddress : '',
+        start: startAddress !== '' ? startAddress : '',
         end: endAddress,
         provider: 'google',
         navigate_mode: 'preview'

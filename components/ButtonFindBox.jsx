@@ -2,18 +2,16 @@ import React from 'react'
 import { StyleSheet, Pressable, View, Platform, Text } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 
-const ButtonFindBox = ({ navigation, origin, placeId }) => {
+const ButtonFindBox = ({ navigation, location }) => {
 
     /**
      * 
      */
     const goToMapRoutesBox = () => {
-        if (origin) {
-            navigation.navigate('RouteMap', { origin: origin });
+        if (location) {
+            navigation.navigate('RouteMap', { location });
         }
-        if (placeId) {
-            navigation.navigate('RouteMap', { placeId: placeId });
-        }
+       
     }
 
     return (
