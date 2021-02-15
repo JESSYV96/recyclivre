@@ -1,1 +1,0 @@
-export const GET_USER_LOCATION = 'GET_USER_LOCATION'

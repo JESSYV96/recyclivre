@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, View } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import boxToRead from '../data/boiteALire.json'
 import AddressBox from '../components/AddressBox'
 import ButtonFindBox from '../components/ButtonFindBox';
+import { getUserLocation } from '../store/user/user.actions';
 
 const HomeScreen = () => {
     const navigation = useNavigation();
-    const [userLocation, setUserLocation] = useState(null);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestPermissionsAsync();
             if (status !== 'granted') {
-              setErrorMsg('Permission to access location was denied');
-              return;
+                console.log('Permission to access location was denied');
+                return;
             }
-      
+
             let location = await Location.getCurrentPositionAsync({});
-            setUserLocation(location);
-          })()
+            dispatch(getUserLocation(location))
+        })();
     }, [])
+
+    const { loading: loadingGeoLocation, geoLocation } = useSelector(state => state.user)
 
     return (
         <View style={styles.container}>
@@ -31,7 +35,7 @@ const HomeScreen = () => {
                 showsUserLocation={true}
                 style={styles.map}
                 initialRegion={{
-                    latitude:  48.856614,
+                    latitude: 48.856614,
                     longitude: 2.3522219,
                     latitudeDelta: 0.900,
                     longitudeDelta: 0.900,
@@ -49,12 +53,12 @@ const HomeScreen = () => {
             </MapView>
             <AddressBox navigation={navigation} />
             <View style={styles.bottom}>
-            {userLocation && (
+                {!loadingGeoLocation && geoLocation && (
                 <ButtonFindBox
                     placeId={null}
                     origin={{
-                        latitude: userLocation.coords.latitude,
-                        longitude: userLocation.coords.longitude
+                        latitude: geoLocation.latitude,
+                        longitude: geoLocation.longitude
                     }}
                     navigation={navigation}
                 />

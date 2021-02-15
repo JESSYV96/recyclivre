@@ -54,7 +54,6 @@ const RouteMapScreen = () => {
                     setDuration(data.routes[0].legs[0].duration.text)
                 });
         }
-
     }, [])
 
 
@@ -69,7 +68,7 @@ const RouteMapScreen = () => {
                 scrollEnabled={false}
                 style={styles.map}
                 initialRegion={{
-                    latitude:  48.856614,
+                    latitude: 48.856614,
                     longitude: 2.3522219,
                     latitudeDelta: 0.900,
                     longitudeDelta: 0.900,

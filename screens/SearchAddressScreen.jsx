@@ -28,17 +28,14 @@ const SearchAddressScreen = () => {
                 color="black" />
             <GooglePlacesAutocomplete
                 placeholder='Entrer une adresse'
-                minLength={2}
+                minLength={3}
                 onPress={(data, details = null) => {
-                    console.log(data, details);
                     setPlaceId(data.place_id)
                 }}
                 query={{
                     key: GOOGLE_KEY_API,
                     language: 'fr',
                 }}
-                currentLocation={true}
-                currentLocationLabel='Position actuelle'
             />
             <View style={styles.buttonContainer}>
                 <ButtonFindBox
