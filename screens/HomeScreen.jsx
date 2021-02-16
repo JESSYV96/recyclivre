@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, View } from 'react-native'
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import AddressBox from '../components/AddressBox'
@@ -29,11 +29,10 @@ const HomeScreen = () => {
 
     const { loading: loadingGeoLocation, geoLocation } = useSelector(state => state.user)
     const { listBox } = useSelector(state => state.box)
-    
+
     return (
         <View style={styles.container}>
             <MapView
-                provider={PROVIDER_GOOGLE}
                 showsUserLocation={true}
                 style={styles.map}
                 initialRegion={{
@@ -48,8 +47,8 @@ const HomeScreen = () => {
                         description={box.comment}
                         key={box.id}
                         coordinate={{
-                            latitude: parseFloat(box.coords.latitude),
-                            longitude: parseFloat(box.coords.longitude)
+                            latitude: box.coords.latitude,
+                            longitude: box.coords.longitude
                         }} />
                 ))}
             </MapView>

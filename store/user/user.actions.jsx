@@ -2,7 +2,10 @@ export const GET_USER_LOCATION_REQUEST = 'GET_USER_LOCATION_REQUEST'
 export const GET_USER_LOCATION_SUCCESS = 'GET_USER_LOCATION_SUCCESS'
 export const GET_USER_LOCATION_ERROR = 'GET_USER_LOCATION_ERROR'
 
-export const getUserLocation = (location) => (dispatch) => {
+/**
+ * @desc Retrieve user's location
+ */
+export const userLocation = (location) => (dispatch) => {
     try {
         dispatch({
             type: GET_USER_LOCATION_REQUEST

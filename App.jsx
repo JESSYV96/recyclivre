@@ -39,7 +39,6 @@ export default function App() {
             name="SearchAddress"
             component={SearchAddressScreen} />
           <Stack.Screen
-            // options={{ headerShown: false }}
             name="RouteMap"
             component={RouteMapScreen} />
         </Stack.Navigator>

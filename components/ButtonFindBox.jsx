@@ -1,11 +1,11 @@
 import React from 'react'
-import { StyleSheet, Pressable, View, Platform, Text } from 'react-native'
+import { StyleSheet, Pressable, View, Text } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 
 const ButtonFindBox = ({ navigation, location }) => {
 
     /**
-     * 
+     * @desc Move to RouteMap screen
      */
     const goToMapRoutesBox = () => {
         if (location) {

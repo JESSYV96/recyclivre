@@ -4,6 +4,6 @@ module.exports = function(api) {
     presets: [
       'babel-preset-expo',
     ],
-    plugins: ['transform-inline-environment-variables', ],
+    plugins: ['transform-inline-environment-variables'],
   };
 };

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { useRoute } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,8 +10,6 @@ import { GOOGLE_KEY_API } from '../env';
 
 import { getItineraryInfo } from '../store/itinerary/itinerary.actions';
 import { getShorterDistance } from '../store/box/box.actions';
-
-const destination = { latitude: 49.019495, longitude: 2.1537956 };
 
 const RouteMapScreen = () => {
     const route = useRoute()
@@ -57,14 +55,12 @@ const RouteMapScreen = () => {
     const openAppGoogleMaps = createOpenLink({
         start: startAddress !== '' ? startAddress : '',
         end: endAddress,
-        provider: 'google',
         navigate_mode: 'preview'
     });
 
     return (
         <View style={styles.container}>
             <MapView
-                provider={PROVIDER_GOOGLE}
                 showsUserLocation={true}
                 style={styles.map}
                 initialRegion={{

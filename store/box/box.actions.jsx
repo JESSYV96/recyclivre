@@ -4,7 +4,9 @@ import { getDistanceFromLatLonInKm } from '../../utils/distanceBetweenTwoPoints'
 export const LIST_BOXES = 'LIST_BOXES'
 export const SHORTER_DESTINATION_REQUEST = 'SHORTER_DESTINATION_REQUEST'
 export const SHORTER_DESTINATION_SUCCESS = 'SHORTER_DESTINATION_SUCCESS'
-
+/**
+ * @desc Get All boxes 
+ */
 export const getAllBoxes = () => (dispatch) => {
     const boxesCoords = []
     boxesToRead.map(box => {
@@ -28,6 +30,9 @@ export const getAllBoxes = () => (dispatch) => {
     })
 }
 
+/**
+ * @desc Get shorter distance from box list
+ */
 export const getShorterDistance = (startLat, startLng, boxesList) => (dispatch) => {
     dispatch({
         type: SHORTER_DESTINATION_REQUEST
