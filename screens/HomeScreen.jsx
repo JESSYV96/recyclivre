@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import AddressBox from '../components/AddressBox'
 import ButtonFindBox from '../components/ButtonFindBox';
-import { getUserLocation } from '../store/user/user.actions';
+import { userLocation } from '../store/user/user.actions';
 import { getAllBoxes } from '../store/box/box.actions';
 
 const HomeScreen = () => {
@@ -22,7 +22,7 @@ const HomeScreen = () => {
             }
 
             let location = await Location.getCurrentPositionAsync({});
-            dispatch(getUserLocation(location))
+            dispatch(userLocation(location))
         })();
         dispatch(getAllBoxes())
     }, [])
@@ -38,8 +38,8 @@ const HomeScreen = () => {
                 initialRegion={{
                     latitude: 48.856614,
                     longitude: 2.3522219,
-                    latitudeDelta: 0.900,
-                    longitudeDelta: 0.900,
+                    latitudeDelta: 11,
+                    longitudeDelta: 11,
                 }}>
                 {listBox.map(box => (
                     <Marker

@@ -31,7 +31,7 @@ export const getAllBoxes = () => (dispatch) => {
 }
 
 /**
- * @desc Get shorter distance from box list
+ * @desc Get shorter distance betwween a start address and box list
  */
 export const getShorterDistance = (startLat, startLng, boxesList) => (dispatch) => {
     dispatch({

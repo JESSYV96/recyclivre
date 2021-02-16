@@ -22,8 +22,8 @@ export const getItineraryInfo = (startAddress, startLocation, endAddress, endLoc
             duration,
             distance
         }
-        
-        dispatch({
+
+        return dispatch({
             type: ITINERARY_INFO_SUCCESS,
             payload: intenaryInfo
         })
