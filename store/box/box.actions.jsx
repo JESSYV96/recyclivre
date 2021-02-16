@@ -1,9 +1,7 @@
 import boxesToRead from '../../data/boiteALire.json';
-import { getDistanceFromLatLonInKm } from '../../utils/distanceBetweenTwoPoints';
 
 export const LIST_BOXES = 'LIST_BOXES'
-export const SHORTER_DESTINATION_REQUEST = 'SHORTER_DESTINATION_REQUEST'
-export const SHORTER_DESTINATION_SUCCESS = 'SHORTER_DESTINATION_SUCCESS'
+
 /**
  * @desc Get All boxes 
  */
@@ -27,30 +25,5 @@ export const getAllBoxes = () => (dispatch) => {
     return dispatch({
         type: LIST_BOXES,
         payload: boxesCoords
-    })
-}
-
-/**
- * @desc Get shorter distance betwween a start address and box list
- */
-export const getShorterDistance = (startLat, startLng, boxesList) => (dispatch) => {
-    dispatch({
-        type: SHORTER_DESTINATION_REQUEST
-    })
-
-    var shortDistance = Number.MAX_SAFE_INTEGER
-    var shorterDestination = null
-
-    boxesList.map(box => {
-        const distance = getDistanceFromLatLonInKm(startLat, startLng, box.coords.latitude, box.coords.longitude)
-        if (distance < shortDistance) {
-            shortDistance = distance
-            shorterDestination = box
-        }
-    })
-
-    return dispatch({
-        type: SHORTER_DESTINATION_SUCCESS,
-        payload: shorterDestination
     })
 }
